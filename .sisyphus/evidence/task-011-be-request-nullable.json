@@ -1,0 +1,29 @@
+{
+  "message": "결제 요청 준비 완료",
+  "statusCode": 200,
+  "success": true,
+  "data": {
+    "orderId": "TXN_456_a5f4d0e048ea43cf9f2b84003f9b9d5a",
+    "amount": 120000,
+    "orderName": "티켓 결제",
+    "customerName": "홍길동",
+    "customerEmail": "buyer@test.com",
+    "successUrl": "https://example.com/payment/success",
+    "failUrl": "https://example.com/payment/fail",
+    "clientKey": "test_ck_xxx",
+    "ticketInfo": {
+      "ticketId": null,
+      "seatInfo": null,
+      "quantity": null,
+      "unitPrice": null,
+      "totalAmount": null,
+      "thumbnailUrl": null
+    },
+    "eventInfo": {
+      "eventId": null,
+      "title": null,
+      "eventDateTime": null,
+      "venueName": null
+    }
+  }
+}

@@ -1,0 +1,16 @@
+[T15] 정산 연계 코드 검증
+파일: TicketPlatFormServer/TicketPlatFormServer/Services/BankAccount/BankAccountService.cs
+
+검증 결과: PASS
+
+검증 대상 메서드: ConfirmVerificationAsync
+
+1) 정산 재개 연동 호출 확인
+- await paymentService.ResumeHeldSettlementsAsync(userId, bankAccount.Id); (line 175)
+
+2) 인증 상태 VERIFIED 설정 확인
+- bankAccount.VerificationStatus = "VERIFIED"; (line 169)
+- 응답 DTO에서도 VerificationStatus = "VERIFIED" 설정 (line 182)
+
+3) 최근 인증 시각 기록 확인
+- bankAccount.LastVerificationAt = DateTime.UtcNow; (line 171)

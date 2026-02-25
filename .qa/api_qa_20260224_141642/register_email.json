@@ -1,0 +1,1 @@
+{"message":"회원가입 성공","data":{"email":"test@example.com","phone":"","role":"user","provider":"email"},"statusCode":200,"success":true}

@@ -1,0 +1,27 @@
+Analyzing ticket_platform_mobile...                             
+
+warning • Dead code • lib/core/config/app_config_provider.dart:13:25 • dead_code
+   info • Dangling library doc comment • lib/features/chat/data/datasources/chat_signalr_data_source.dart:1:1 • dangling_library_doc_comments
+   info • Dangling library doc comment • lib/features/chat/presentation/viewmodels/chat_room_viewmodel.dart:1:1 • dangling_library_doc_comments
+   info • Angle brackets will be interpreted as HTML • lib/features/chat/presentation/viewmodels/chat_room_viewmodel.dart:7:17 • unintended_html_in_doc_comment
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/chat/presentation/widgets/quantity_input_dialog.dart:25:32 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/chat/presentation/widgets/quantity_input_dialog.dart:143:33 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/chat/presentation/widgets/quantity_input_dialog.dart:146:35 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/chat/presentation/widgets/quantity_input_dialog.dart:151:37 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/chat/presentation/widgets/quantity_input_dialog.dart:273:50 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/chat/presentation/widgets/quantity_input_dialog.dart:320:30 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/chat/presentation/widgets/quantity_input_dialog.dart:322:30 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/chat/presentation/widgets/quantity_input_dialog.dart:438:38 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/chat/presentation/widgets/quantity_input_dialog.dart:448:32 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/chat/presentation/widgets/quantity_input_dialog.dart:489:54 • deprecated_member_use
+   info • Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check • lib/features/dispute/presentation/views/create_dispute_view.dart:99:34 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check • lib/features/dispute/presentation/views/create_dispute_view.dart:115:11 • use_build_context_synchronously
+warning • The declaration '_buildDetailRow' isn't referenced • lib/features/payment/presentation/views/payment_failure_view.dart:191:10 • unused_element
+   info • Unnecessary braces in a string interpolation • lib/features/profile/presentation/viewmodels/profile_viewmodel.dart:81:43 • unnecessary_brace_in_string_interps
+warning • Unnecessary cast • lib/features/profile/presentation/widgets/transaction_filter_bar.dart:100:46 • unnecessary_cast
+warning • Unnecessary cast • lib/features/profile/presentation/widgets/transaction_filter_bottom_sheet.dart:222:33 • unnecessary_cast
+   info • Unnecessary braces in a string interpolation • lib/features/sales_dashboard/presentation/ui_models/event_group_ui_model.dart:58:29 • unnecessary_brace_in_string_interps
+   info • Unnecessary braces in a string interpolation • lib/features/sales_dashboard/presentation/ui_models/event_ticket_ui_model.dart:73:25 • unnecessary_brace_in_string_interps
+warning • The value of the local variable 'totalPriceText' isn't used • lib/features/ticketing/presentation/view/widgets/ticket_listing_card.dart:132:11 • unused_local_variable
+
+23 issues found. (ran in 3.9s)

@@ -1,0 +1,40 @@
+Task 6: SellService Extension Evidence
+Generated: 2026-02-24
+===========================================
+
+## ISellService.cs - Added 2 method signatures
+File: TicketPlatFormServer/TicketPlatFormServer/Services/Sell/ISellService.cs
+
+Added:
+  Task<SalesDashboardRespDto> GetSalesDashboardAsync(int sellerId, SalesDashboardReqDto request);
+  Task<EventTicketListRespDto> GetEventTicketsAsync(int sellerId, int eventId, int page, int size);
+
+## SellService.cs - Implemented both methods
+File: TicketPlatFormServer/TicketPlatFormServer/Services/Sell/SellService.cs
+
+### GetSalesDashboardAsync
+- Calls _sellRepository.GetSalesDashboardAsync(sellerId, request.Status, request.Page, request.Size)
+- Batch signs PosterImageUrl via _fileUploadService.RefreshSignedUrlsBatchAsync
+- Maps SalesDashboardReadModel -> EventGroupItemDto
+- Assembles SalesDashboardRespDto with HasMore = (page * size) < totalCount
+
+### GetEventTicketsAsync
+- Calls _sellRepository.GetEventTicketsAsync(sellerId, eventId, page, size)
+- Batch signs ThumbnailPath via _fileUploadService.RefreshSignedUrlsBatchAsync
+- Status mapping (priority order):
+  1. SettlementStatusCode == "completed" -> statusCode="completed", statusName="판매 완료"
+  2. TransactionStatusCode == "confirmed" && settlement != completed -> statusCode="settling", statusName="정산 중"
+  3. StatusCode == "available" -> statusCode="on_sale", statusName="판매중"
+  4. Other -> original StatusCode/StatusName
+- SeatInfo constructed from SeatGradeName + AreaName + Row (null-safe join)
+- EventTitle fallback: "공연 정보 없음" when items list is empty
+- Assembles EventTicketListRespDto with HasMore = (page * size) < totalCount
+
+## Verification
+grep -c "GetSalesDashboardAsync" SellService.cs => 2 (definition + call)
+grep -c "settling"              SellService.cs => 1
+grep -c "completed"            SellService.cs => 3
+
+## Build Result
+dotnet build TicketPlatFormServer
+=> Build succeeded. 0 errors. 0 warnings.

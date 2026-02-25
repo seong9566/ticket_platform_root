@@ -1,0 +1,22 @@
+[T15] DB 마이그레이션 SQL 유효성 검증
+파일: TicketPlatFormServer/TicketPlatFormServer/database_history/migrations/20260225_003_add_verification_provider_fields.sql
+
+검증 결과: PASS
+
+1) 5개 컬럼 추가 SQL 존재 확인
+- verification_provider: line 3 ALTER TABLE ... ADD COLUMN verification_provider
+- verification_tier: line 8 ALTER TABLE ... ADD COLUMN verification_tier
+- verification_status: line 13 ALTER TABLE ... ADD COLUMN verification_status
+- last_verification_failure_code: line 18 ALTER TABLE ... ADD COLUMN last_verification_failure_code
+- last_verification_at: line 23 ALTER TABLE ... ADD COLUMN last_verification_at
+
+2) DROP COLUMN / 데이터 삭제문 부재 확인
+- DROP COLUMN: 없음
+- DELETE FROM: 없음
+
+3) Idempotent 패턴 확인
+- 각 컬럼 추가 전 information_schema.columns 존재 여부 COUNT 검사 사용
+- SET @q := IF(@c = 0, 'ALTER TABLE ... ADD COLUMN ...', 'SELECT 1') 패턴 적용
+
+추가 관찰
+- Backfill UPDATE(라인 27~32)로 기존 데이터 기본값 보정 수행

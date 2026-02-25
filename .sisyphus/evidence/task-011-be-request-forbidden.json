@@ -1,0 +1,6 @@
+{
+  "message": "해당 거래의 구매자만 결제를 요청할 수 있습니다.",
+  "statusCode": 403,
+  "success": false,
+  "data": null
+}

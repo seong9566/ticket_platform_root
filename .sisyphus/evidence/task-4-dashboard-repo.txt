@@ -1,0 +1,79 @@
+=== TASK 4: Dashboard Repository with Dynamic HAVING Clause ===
+
+=== VERIFICATION 1: HAVING clause count ===
+6
+
+=== VERIFICATION 2: Task.WhenAll check (should be 0) ===
+0
+0
+
+=== VERIFICATION 3: Build output ===
+  복원할 프로젝트를 확인하는 중...
+  복원할 모든 프로젝트가 최신 상태입니다.
+  TicketPlatFormServer -> /Users/stecdev/Desktop/workspace/flutter_project/ticket_platform/TicketPlatFormServer/TicketPlatFormServer/bin/Debug/net9.0/TicketPlatFormServer.dll
+
+빌드했습니다.
+    경고 0개
+    오류 0개
+
+경과 시간: 00:00:00.78
+
+=== IMPLEMENTATION DETAILS ===
+
+=== GetSalesDashboardAsync Method (with dynamic HAVING) ===
+    public async Task<(List<SalesDashboardReadModel> Items, int TotalCount)> GetSalesDashboardAsync(
+        int sellerId,
+        string? statusFilter,
+        int page,
+        int size)
+    {
+        var offset = (page - 1) * size;
+        var parameters = new DynamicParameters();
+        parameters.Add("@SellerId", sellerId);
+        parameters.Add("@Size", size);
+        parameters.Add("@Offset", offset);
+        // Build SQL with dynamic HAVING clause based on statusFilter
+        var sql = SellQueries.GetSalesDashboard;
+        if (!string.IsNullOrEmpty(statusFilter) && statusFilter != "all")
+        {
+            sql += statusFilter switch
+            {
+                "on_sale" => " HAVING OnSaleCount > 0",
+                "completed" => " HAVING CompletedCount > 0",
+                "settling" => " HAVING SettlingCount > 0",
+                _ => ""
+            };
+        }
+        var items = await _dapper.QueryAsync<SalesDashboardReadModel>(
+            sql,
+            parameters);
+        // Build count SQL with same HAVING clause
+        var countSql = SellQueries.GetSalesDashboardCount;
+        if (!string.IsNullOrEmpty(statusFilter) && statusFilter != "all")
+        {
+            countSql += statusFilter switch
+            {
+                "on_sale" => " HAVING OnSaleCount > 0",
+                "completed" => " HAVING CompletedCount > 0",
+                "settling" => " HAVING SettlingCount > 0",
+                _ => ""
+            };
+        }
+        var countResult = await _dapper.QuerySingleAsync<int>(
+            countSql,
+            new { @SellerId = sellerId });
+
+        return (items.ToList(), countResult);
+    }
+
+=== FINAL VERIFICATION ===
+
+✓ HAVING clause implementations:
+       6
+
+✓ No Task.WhenAll (sequential execution):
+       0
+
+✓ Build status: SUCCESS
+✓ Errors: 0
+✓ Warnings: 0

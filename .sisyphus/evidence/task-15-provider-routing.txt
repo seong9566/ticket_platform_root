@@ -1,0 +1,17 @@
+[T15] Provider 라우팅 코드 검증
+파일: TicketPlatFormServer/TicketPlatFormServer/Services/BankAccount/BankAccountVerificationProviderFactory.cs
+
+검증 결과: PASS
+
+1) 3개 Provider 분기 확인
+- "custom" => customProvider (line 31)
+- "toss" => tossProvider (line 32)
+- "hybrid" => hybridProvider (line 33)
+
+2) Unknown 설정 fallback 확인
+- default 분기: _ => FallbackToCustom(providerSetting) (line 34)
+- FallbackToCustom에서 customProvider 반환 (line 43)
+
+3) 경고 로그 확인
+- logger.LogWarning(...) 호출 존재 (line 40)
+- 메시지: "알 수 없는 Provider 설정 '{Setting}', Custom으로 fallback." (line 41)

@@ -1,0 +1,29 @@
+{
+  "message": "결제 요청 준비 완료",
+  "statusCode": 200,
+  "success": true,
+  "data": {
+    "orderId": "TXN_123_5a4db90f30f14dfab1c039fbc7ce2674",
+    "amount": 360000,
+    "orderName": "Bunnies Camp 2024 티켓 결제",
+    "customerName": "홍길동",
+    "customerEmail": "buyer@test.com",
+    "successUrl": "https://example.com/payment/success",
+    "failUrl": "https://example.com/payment/fail",
+    "clientKey": "test_ck_xxx",
+    "ticketInfo": {
+      "ticketId": 871,
+      "seatInfo": "1층 R구역 VIP석 119열",
+      "quantity": 1,
+      "unitPrice": 360000,
+      "totalAmount": 360000,
+      "thumbnailUrl": "https://cdn.example.com/poster.png"
+    },
+    "eventInfo": {
+      "eventId": 91,
+      "title": "Bunnies Camp 2024",
+      "eventDateTime": "2026-02-26T18:00:00Z",
+      "venueName": "고척스카이돔"
+    }
+  }
+}

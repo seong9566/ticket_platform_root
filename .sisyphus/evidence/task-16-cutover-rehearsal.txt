@@ -1,0 +1,96 @@
+T16 Provider 전환 Smoke Test 결과
+=====================================
+실행일시: 2026-02-25 (로컬 환경)
+Branch: feat/notification-fcm
+
+=== 1. BankVerificationProvider 설정 위치 확인 ===
+
+[appsettings.json] line 42
+  -> "BankVerificationProvider": "Custom"   (운영 기본값)
+  -> "BankVerificationFallbackEnabled": true
+  -> "BankVerificationTimeoutSeconds": 10
+
+[appsettings.Development.json] line 32
+  -> "BankVerificationProvider": "Hybrid"   (개발 환경 오버라이드)
+  -> "BankVerificationFallbackEnabled": true
+  -> "BankVerificationTimeoutSeconds": 10
+
+[appsettings.TossPayments.json] line 17
+  -> "BankVerificationProvider": "Hybrid"   (Toss 전용 설정 파일)
+  -> "BankVerificationFallbackEnabled": true
+  -> "BankVerificationTimeoutSeconds": 10
+
+[Config/TossPaymentsSettings.cs] line 60
+  -> C# 기본값: "Custom" (appsettings 미설정 시 fallback)
+
+=== 2. Provider Factory 3개 분기 확인 ===
+
+파일: Services/BankAccount/BankAccountVerificationProviderFactory.cs
+
+  "custom"  -> CustomBankVerificationProvider  (line 31)
+  "toss"    -> TossBankVerificationProvider     (line 32)
+  "hybrid"  -> HybridBankVerificationProvider  (line 33)
+  그 외     -> FallbackToCustom() 경고 로그 후 Custom 반환 (line 34)
+
+Program.cs DI 등록 확인 (lines 330-332):
+  builder.Services.AddScoped<CustomBankVerificationProvider>();
+  builder.Services.AddScoped<TossBankVerificationProvider>();
+  builder.Services.AddScoped<HybridBankVerificationProvider>();
+
+BankAccountService.cs에서 Factory 사용 위치 (lines 84, 138):
+  var provider = providerFactory.Resolve(settings.BankVerificationProvider);
+
+=== 3. dotnet build Smoke Test ===
+
+커맨드: dotnet build TicketPlatFormServer/TicketPlatFormServer.sln
+
+결과:
+  복원: 최신 상태 (캐시 사용)
+  출력: TicketPlatFormServer.dll
+
+  빌드했습니다.
+    경고 0개
+    오류 0개
+  경과 시간: 00:00:00.88
+
+판정: PASS ✓
+
+=== 4. 설정 파일 우선순위 (ASP.NET Core 기본) ===
+
+로드 순서 (나중이 우선):
+  1. appsettings.json           (기본: Custom)
+  2. appsettings.{env}.json     (Development: Hybrid, Production: 별도 설정 필요)
+  3. 환경변수                    (TossPayments__BankVerificationProvider=Toss)
+  4. 커맨드라인 인수
+
+전환 시 권장 방법: 환경변수 주입 (재배포 없이 즉시 전환 가능)
+  export TossPayments__BankVerificationProvider=Hybrid
+  export TossPayments__BankVerificationProvider=Toss
+  export TossPayments__BankVerificationProvider=Custom  (롤백)
+
+=== 5. Provider별 동작 요약 ===
+
+Custom:
+  - RequestAsync: DB에 verification_code 생성 및 저장, provider 필드 없음
+  - ConfirmAsync: DB code 매칭 확인
+  - 외부 API 호출 없음
+
+Hybrid:
+  - RequestAsync: Toss 사전 검증 시도 → 실패 시 Custom fallback
+  - ConfirmAsync: Toss 경로면 Toss 확인, 아니면 Custom 확인
+  - BankVerificationFallbackEnabled=true 필수
+
+Toss:
+  - RequestAsync: Toss API 호출하여 계좌 사전 검증
+  - ConfirmAsync: 사전 검증 완료 여부 확인
+  - Toss SecretKey 유효 필수
+
+=== 결론 ===
+
+현재 상태(Custom):
+  - 빌드 PASS (0 errors, 0 warnings)
+  - Factory 3개 분기 모두 구현 완료
+  - DI 등록 완료
+  - 설정 전환만으로 Provider 변경 가능 (코드 변경 불필요)
+
+Smoke Test 판정: GO ✓

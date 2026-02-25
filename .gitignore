@@ -1,0 +1,27 @@
+# PM 관리 문서 (프로젝트 루트)
+# 개인 메모나 임시 파일은 무시
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# 임시 파일
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# IDE
+.vscode/
+.idea/
+*.code-workspace
+
+# 로그 파일
+*.log
+
+# 개인 메모 (선택적으로 제거)
+notes/
+private/
+scratch/

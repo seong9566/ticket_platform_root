@@ -1,0 +1,19 @@
+[T15] 모바일 Provider-aware 코드 검증
+파일: ticket_platform_mobile/lib/features/bank_account/presentation/viewmodels/bank_account_viewmodel.dart
+
+검증 결과: PASS
+
+1) tossVerified 상태 존재 확인
+- enum VerificationState에 tossVerified 존재 (line 16)
+- Toss 경로 성공 시 VerificationState.tossVerified 설정 (line 170)
+
+2) _confirmTossVerification 메서드 존재 확인
+- Future<void> _confirmTossVerification(...) 선언 존재 (line 156)
+- requestVerification()에서 Toss/Hybrid 즉시 확인 경로로 호출 (line 124)
+
+3) mapReasonCodeToMessage 5개 코드 매핑 확인
+- INVALID_INPUT -> 입력 정보를 다시 확인해주세요. (line 257)
+- ACCOUNT_MISMATCH -> 계좌/예금주 정보가 일치하지 않습니다. (line 258)
+- IDENTITY_MISMATCH -> 본인(사업자) 정보가 일치하지 않습니다. (line 259)
+- UPSTREAM_TEMPORARY -> 은행 점검 중입니다. 잠시 후 다시 시도해주세요. (line 260)
+- PROVIDER_AUTH_ERROR -> 인증 서비스 설정 문제입니다. 잠시 후 다시 시도해주세요. (line 261)
